@@ -6,7 +6,6 @@ define(['angular', 'app/config/router', 'app/service/httpService', 'angular-rout
             '$state',
             '$stateParams',
             function ($rootScope, $state, $stateParams) {
-                console.log('run...');
                 $rootScope.$state = $state;
                 $rootScope.$stateParams = $stateParams
             }
