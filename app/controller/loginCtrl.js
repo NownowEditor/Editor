@@ -12,7 +12,7 @@ define(['app/service/loginService'],function(LoginService){
                 "upwd":$scope.account.password
             });
             promise.then(function(data){
-                $state.go('home');
+                $state.go('home.cEnergy');
             });
         }
     }

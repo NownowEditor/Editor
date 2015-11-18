@@ -1,0 +1,31 @@
+.body {
+    font-family: '微软雅黑'
+}
+.top10{
+    margin-top: 10px;
+}
+
+
+
+.calendar {
+
+}
+
+.calendar .cell{
+}
+.calendar .focus{
+    border: 2px solid #337ab7;
+}
+.calendar .cur{
+    cursor: pointer;;
+}
+.calendar .cur:hover{
+    background-color: #d7d7d9;
+}
+.calendar .oth{
+    opacity: 0.3;
+}
+
+.calendar .name{
+    font-weight: bold;
+}

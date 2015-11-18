@@ -1,49 +1,41 @@
 define(['jquery'], function($){
     var service = function(){
         this.get = function(options){
-            $.ajax({
+            var deferred = $.ajax({
                 "url":options.url,
                 "method":"GET",
                 "beforeSend": function(request){
-                    request.setRequestHeader("X-Auth-Token", options.token || "")
+                    // request.setRequestHeader("X-Auth-Token", options.token || "")
                 },
-                "data": options.params,
+                "data": options.params || {},
                 "dataType":"JSON",
-                "success":function(data){
-                    (typeof options.success === "function") && (options.success(data));
+                "success":function(){
                 }
             });
+            return deferred;
         };
 
         this.post = function(options){
-            $.ajax({
+            var deferred = $.ajax({
                 "url":options.url,
                 "method":"POST",
                 "beforeSend": function(request){
-                    request.setRequestHeader("X-Auth-Token", options.token || "")
+                    // if (!!options.user){
+                    //     request.setRequestHeader("X-Auth-User", options.user)
+                    // }
+                    // if (!!options.pwd){
+                    //     request.setRequestHeader("X-Auth-Password", options.pwd)
+                    // }
+                    // if (!!options.token){
+                    //     request.setRequestHeader("X-Auth-Token", options.token)
+                    // }
                 },
-                "data": options.params,
+                "data": options.params || {},
                 "dataType":"JSON",
                 "success":function(data){
-                    (typeof options.success === "function") && (options.success(data));
                 }
             });
-        };
-
-        this.auth = function(options){
-            $.ajax({
-                "url":options.url,
-                "method":"GET",
-                "beforeSend": function(request){
-                    request.setRequestHeader("X-Auth-Token", options.token || "")
-                },
-                "data": options.params,
-                "dataType":"JSON",
-                "success":function(data){
-                    (typeof options.success === "function") && (options.success(data));
-                }
-            });
-
+            return deferred;
         };
     };
 

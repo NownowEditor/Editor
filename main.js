@@ -4,7 +4,8 @@ require.config({
         'angular': 'third_party/angular/angular.min',
         'bootstrap': 'third_party/bootstrap/js/bootstrap.min',
         'angular-route': 'third_party/uirouter/angular-ui-router.min',
-        'controller': 'app/controller'
+        'controller': 'app/controller',
+        'calendar': 'third_party/responsiveCalendar/js/calendar-tpls'
     },
     shim:{
         'angular':{
@@ -17,7 +18,7 @@ require.config({
     }
 });
 
-require(['jquery','angular','app'],function($, angular, app){
+require(['jquery','angular','framework'],function($, angular, app){
     'use strict';
-    angular.bootstrap($('html'), ['webapp']);
+    angular.bootstrap($('html'), [app.name]);
 });

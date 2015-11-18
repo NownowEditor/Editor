@@ -2,16 +2,15 @@ define([], function(){
     var service = function($q, camel){
         this.login = function(options){
             var defer = $q.defer();
-
-            camel.post({
+            var loginReq = camel.post({
                 "url":"/login",
+                "user": options.uname,
+                "pwd":options.upwd,
                 "params":{
-                    "uname":options.uname,
-                    "upwd":options.upwd
-                },
-                "success":function(data){
-                    defer.resolve(data);
                 }
+            });
+            loginReq.success(function(data){
+                defer.resolve(data);
             });
             return defer.promise;
         };
