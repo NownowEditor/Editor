@@ -1,4 +1,17 @@
-<calendar cur-day="curDay" mode="mode" 
-          on-day-click="onDayClick(key,data)" on-week-click="onWeekClick(key,data)"
-          get-day-luck-situation="getDayLuckSituation(range)">
+<calendar cur-day="curDay" mode="mode" ng-show="!editing"
+              on-day-click="onDayClick(key,data)" on-week-click="onWeekClick(key,data)"
+              get-day-luck-situation="getDayLuckSituation(range)">
 </calendar>
+<div class="row-fluid clearfix" ng-show="editing">
+    <button class="btn btn-default btn-sm col-lg-1 col-md-1 col-sm-2 col-xs-3 close-to-left" ng-click="backToCalendar()">
+        <span class="glyphicon glyphicon-chevron-left"></span><span>概览</span>
+    </button>
+    <span ng-bind="title" class="text-center col-lg-10 col-md-10 col-sm-8 col-xs-6"></span>
+    <button class="btn btn-primary btn-sm col-lg-1 col-md-1 col-sm-2 col-xs-3 close-to-right pull-right">保存</button>
+</div>
+<div id="editArea" class="row-fluid clearfix" ng-show="editing">
+    <div ng-repeat="astronomy in luckData" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 sub-edit-area close-to-left close-to-right">
+        <span class="h4 center-block text-center" ng-bind="astronomy.name"></span>
+        <textarea style="width:99%"></textarea>
+    </div>
+</div>

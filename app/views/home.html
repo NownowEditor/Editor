@@ -1,6 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false" id="toggle-button">
         <span class="icon-bar"></span>
@@ -9,8 +8,6 @@
       </button>
       <a class="navbar-brand" href="#" ng-bind="brand"></a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li ng-class="{'active':$state.includes(module.state)}" ng-repeat="module in modules"><a ng-click="go(module.state)" onclick="menuclick()" href="javascript:void(0);" ng-bind="module.desc"></a></li>
@@ -18,8 +15,8 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="content" style="margin-top:51px;">
-    <ui-view></ui-view>
+<div class="content container" style="margin-top:51px;">
+  <ui-view></ui-view>
 </div>
 
 <script>

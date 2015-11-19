@@ -5,6 +5,17 @@
     margin-top: 10px;
 }
 
+.close-to-left{
+    padding-left: 0;
+}
+
+.close-to-right{
+    padding-right: 0;
+}
+
+.content{
+    padding-top: 10px;
+}
 
 
 .calendar {
@@ -28,4 +39,16 @@
 
 .calendar .name{
     font-weight: bold;
+}
+
+.edit-area{
+
+}
+
+.sub-edit-area{
+
+}
+.sub-edit-area textarea{
+    width:100%;
+    min-height:150px;
 }

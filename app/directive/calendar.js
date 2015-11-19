@@ -1,7 +1,7 @@
 define(["framework"], function(app){
     var DAY2MILLISECOND = 1000 * 60 * 60 * 24;
     var WEEKTITLE = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-    var WEEK_LANG = {"prev":"前一年","cur":"本周","next":"后一年"};
+    var WEEK_LANG = {"prev":"去年","cur":"本周","next":"明年"};
     var DAY_LANG = {"prev":"上月","cur":"今天", "next":"下月"}
     function getMonthStartEnd(today){
         var start = today.getTime(), end = today.getTime();
@@ -84,7 +84,8 @@ define(["framework"], function(app){
             for (var j = 0; j < 7; ++j){
                 var theDay = new Date(weekView.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND);
                 oneLine.push({
-                    name: "第" + weekNumber + "周",
+                    //name: "第" + weekNumber + "周",
+                    name: weekNumber,
                     desc: (theDay.getMonth() + 1) + "/" + (theDay.getDate()) + "-" + (new Date((theDay.getTime())+6*DAY2MILLISECOND).getMonth() + 1) + "/" + new Date((theDay.getTime())+6*DAY2MILLISECOND).getDate(),
                     id: theDay.toDateString(),
                     focus: (weekView.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND) <= today.getTime() && today.getTime() <= (weekView.range.start.getTime() + (i * 7 + j + 1) * 7 * DAY2MILLISECOND),
@@ -96,59 +97,72 @@ define(["framework"], function(app){
         }
         return weekView;
     }
-    var template = "" + 
-    "<div class=\"container-fluid well well-sm calendar\">" + 
-    "    <div class=\"col-lg-12 col-xs-12 col-sm-12 col-md-12\">" +
-    "        <div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-12\">" + 
-    "            <div class=\"btn-group\">" + 
-    "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='WEEK'}\" " + 
-    "                    ng-click=\"changeMode('WEEK')\"><span>周运势</span></button>" + 
-    "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='DAY'}\"" + 
-    "                    ng-click=\"changeMode('DAY')\"><span>日运势</span></button> " + 
-    "            </div>" + 
-    "        </div>" +  
-    "        <div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-4 text-center h4\">" + 
-    "            <span ng-bind=\"view.midLang\"></span>" + 
-    "        </div>" + 
-    "        <!--" +
-    "        <div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right\">" + 
-    "            <button class=\"btn btn-default btn-sm pull-right\">" + 
-    "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" + 
-    "            </button>" + 
-    "            <button class=\"btn btn-default btn-sm pull-right\">" + 
-    "                <span ng-bind=\"view.lang.cur\"></span>" + 
-    "            </button>" + 
-    "            <button class=\"btn btn-default btn-sm pull-right\">" + 
-    "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" + 
-    "            </button>" + 
-    "        </div>" + 
-    "        -->" +
-    "    </div>" + 
-    "    <div class=\"col-lg-12 col-xs-12 col-sm-12 col-md-12\">" + 
-    "        <div class=\"col-lg-12 col-xs-12 col-sm-12 col-md-12\">" + 
-    "            <table class=\"col-lg-12 table table-bordered\">" + 
-    "                <thead ng-if=\"view.titles\">" + 
-    "                <tr>" + 
-    "                    <th class=\"text-center\" ng-repeat=\"title in view.titles\" ng-bind=\"title\"></th>" + 
-    "                </tr>" + 
-    "                </thead>" + 
-    "                <tbody>" + 
-    "                <tr ng-repeat=\"row in view.metric track by $index\">" + 
-    "                    <td ng-repeat=\"col in row track by col.id\" class=\"text-center cell\" " + 
+    var template = "" +
+    "<div class=\"row-fluid calendar\">" +
+    "    <div class=\"row-fluid\">" +
+    "        <div class=\"col-lg-3 col-md-3 col-sm-5 col-xs-5 close-to-left\">" +
+    "            <div class=\"btn-group\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='WEEK'}\" " +
+    "                    ng-click=\"changeMode('WEEK')\"><span>周运势</span></button>" +
+    "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='DAY'}\"" +
+    "                    ng-click=\"changeMode('DAY')\"><span>日运势</span></button> " +
+    "            </div>" +
+    "        </div>" +
+    "        <div class=\"col-sm-7 col-xs-7 pull-right hidden-lg hidden-md close-to-right\">" +
+    "            <div class=\"btn-group pull-right\">" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
+    "            </button>" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <span ng-bind=\"view.lang.cur\"></span>" +
+    "            </button>" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" +
+    "            </button>" +
+    "            </div>" +
+    "        </div>" +
+    "        <div class=\"col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center h4\">" +
+    "            <span ng-bind=\"view.midLang\"></span>" +
+    "        </div>" +
+    "        <div class=\"col-lg-3 col-md-3 hidden-xs hidden-sm pull-right close-to-right\">" +
+    "            <div class=\"btn-group pull-right\">" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
+    "            </button>" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <span ng-bind=\"view.lang.cur\"></span>" +
+    "            </button>" +
+    "            <button class=\"btn btn-default btn-sm\">" +
+    "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" +
+    "            </button>" +
+    "            </div>" +
+    "        </div>" +
+    "    </div>" +
+    "    <div class=\"row-fluid\">" +
+    "        <div class=\"row-fluid\">" +
+    "            <table class=\"col-lg-12 table table-bordered\">" +
+    "                <thead ng-if=\"view.titles\">" +
+    "                <tr>" +
+    "                    <th class=\"text-center\" ng-repeat=\"title in view.titles\" ng-bind=\"title\"></th>" +
+    "                </tr>" +
+    "                </thead>" +
+    "                <tbody>" +
+    "                <tr ng-repeat=\"row in view.metric track by $index\">" +
+    "                    <td ng-repeat=\"col in row track by col.id\" class=\"text-center cell\" " +
     "                        ng-click=\"col.current && onCellClick(col.id)\" " +
-    "                        ng-class=\"{'cur':col.current,'oth':!col.current, 'edited':col.edited, 'unedited':!col.edited, 'focus':col.focus}\">" + 
-    "                        <div class=\"name center-block \" ng-bind=\"col.name\"></div>" + 
-    "                        <div class=\"desc small center-block \" ng-bind=\"col.desc\"></div>" + 
-    "                    </td>" + 
-    "                </tr>" + 
-    "                </tbody>" + 
-    "            </table>" + 
-    "        </div>" + 
-    "    </div>" + 
+    "                        ng-class=\"{'cur':col.current,'oth':!col.current, 'edited':col.edited, 'unedited':!col.edited, 'focus':col.focus}\">" +
+    "                        <div class=\"name center-block \" ng-bind=\"col.name\"></div>" +
+    "                        <div class=\"desc small center-block hidden-xs\" ng-bind=\"col.desc\"></div>" +
+    "                    </td>" +
+    "                </tr>" +
+    "                </tbody>" +
+    "            </table>" +
+    "        </div>" +
+    "    </div>" +
     "</div>";
 
     var controller = ['$scope', function($scope){
-        
+
     }];
 
     var link = function(scope,element,attris){
@@ -198,7 +212,7 @@ define(["framework"], function(app){
     return function(){
         return {
             restrict: "E",
-            template: template,        
+            template: template,
             replace:true,
             transclude: false,
             scope: {
