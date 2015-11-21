@@ -42,60 +42,126 @@ define(["framework"], function(app){
         return {start:new Date(start), end: new Date(end)};
     }
 
-    function initDayView(today){
-        var dayView = {
-            "range": getMonthStartEnd(today),
-            "mode": "DAY",
-            "metric": [],
-            "luckData": {},
-            "lang": DAY_LANG,
-            "titles": WEEKTITLE,
-            "midLang": today.getFullYear() + "年" + (today.getMonth() + 1) + "月"
-        };
-        for (var i = 0; dayView.range.start.getTime() + i * DAY2MILLISECOND <= dayView.range.end.getTime(); i += 7){
-            var oneWeek = [];
-            for (var j = 0; j < 7; j++){
-                var theDay = new Date(dayView.range.start.getTime() + (i + j) * DAY2MILLISECOND);
-                oneWeek.push({
-                    name: theDay.getDate(),
-                    desc: "",
-                    focus: theDay.getFullYear() === today.getFullYear() && theDay.getMonth() === today.getMonth() && theDay.getDate() === today.getDate(),
-                    id: theDay.toDateString(),
-                    current: theDay.getMonth() === today.getMonth()
-                });
-            }
-            dayView.metric.push(oneWeek);
-        }
-        return dayView;
-    }
-    function initWeekView(today){
-        var weekView = {
-            "range": getYearStartEnd(today),
-            "mode": "WEEK",
-            "metric": [],
-            "luckData": {},
-            "lang": WEEK_LANG,
-            "midLang": today.getFullYear() + "年"
-        };
+    function DayView(oneDay){
+        var today = new Date();
+        this.oneDay = new Date(oneDay.getTime());
+        this.oneDay.setDate(1);
+        this.range = getMonthStartEnd(oneDay);
+        this.mode = "DAY";
+        this.metric = [];
+        this.luckData = {};
+        this.lang = DAY_LANG;
+        this.titles = WEEKTITLE;
+        this.midLang = this.oneDay.getFullYear() + "年" + (this.oneDay.getMonth() + 1) + "月";
 
-        var weekNumber = 1;
-        for (var i = 0; i < 8; ++i){
-            var oneLine = [];
-            for (var j = 0; j < 7; ++j){
-                var theDay = new Date(weekView.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND);
-                oneLine.push({
-                    //name: "第" + weekNumber + "周",
-                    name: weekNumber,
-                    desc: (theDay.getMonth() + 1) + "/" + (theDay.getDate()) + "-" + (new Date((theDay.getTime())+6*DAY2MILLISECOND).getMonth() + 1) + "/" + new Date((theDay.getTime())+6*DAY2MILLISECOND).getDate(),
-                    id: theDay.toDateString(),
-                    focus: (weekView.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND) <= today.getTime() && today.getTime() <= (weekView.range.start.getTime() + (i * 7 + j + 1) * 7 * DAY2MILLISECOND),
-                    current: theDay.getFullYear() <= today.getFullYear()
-                });
-                ++weekNumber;
+        this.initMetric = function(){
+            this.metric = [];
+            for (var i = 0; this.range.start.getTime() + i * DAY2MILLISECOND <= this.range.end.getTime(); i += 7){
+                var oneWeek = [];
+                for (var j = 0; j < 7; j++){
+                    var theDay = new Date(this.range.start.getTime() + (i + j) * DAY2MILLISECOND);
+                    oneWeek.push({
+                        name: theDay.getDate(),
+                        desc: "",
+                        focus: theDay.getFullYear() === today.getFullYear() && theDay.getMonth() === today.getMonth() && theDay.getDate() === today.getDate(),
+                        id: theDay.toDateString(),
+                        current: theDay.getMonth() === this.oneDay.getMonth()
+                    });
+                }
+                this.metric.push(oneWeek);
             }
-            weekView.metric.push(oneLine);
         }
-        return weekView;
+
+        this.prev = function(){
+            if (this.oneDay.getMonth() > 0){
+                this.oneDay.setMonth(this.oneDay.getMonth()-1);
+            }else{
+                this.oneDay.setFullYear(this.oneDay.getFullYear() - 1);
+                this.oneDay.setMonth(11);
+            }
+            this.range = getMonthStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年" + (this.oneDay.getMonth() + 1) + "月";
+        }
+        this.next = function(){
+            if (this.oneDay.getMonth() < 11){
+                this.oneDay.setMonth(this.oneDay.getMonth() + 1);
+            }else{
+                this.oneDay.setFullYear(this.oneDay.getFullYear() + 1);
+                this.oneDay.setMonth(0);
+            }
+            this.range = getMonthStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年" + (this.oneDay.getMonth() + 1) + "月";
+        }
+        this.today = function(){
+            if (today.getFullYear() === this.oneDay.getFullYear() && today.getMonth() === this.oneDay.getMonth()){
+                return;
+            }
+            this.oneDay.setFullYear(today.getFullYear());
+            this.oneDay.setMonth(today.getMonth());
+            this.range = getMonthStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年" + (this.oneDay.getMonth() + 1) + "月";
+        }
+
+        this.initMetric();
+    }
+
+    function WeekView(oneDay){
+        var today = new Date();
+        this.oneDay =  new Date(oneDay.getTime());
+        this.oneDay.setDate(1);
+        this.oneDay.setMonth(0);
+        this.range =  getYearStartEnd(this.oneDay);
+        this.mode =  "WEEK";
+        this.metric =  [];
+        this.luckData =  {};
+        this.lang =  WEEK_LANG;
+        this.midLang =  oneDay.getFullYear() + "年";
+
+        this.initMetric = function(){
+            this.metric = [];
+            var weekNumber = 1;
+            for (var i = 0; i < 8; ++i){
+                var oneLine = [];
+                for (var j = 0; j < 7; ++j){
+                    var theDay = new Date(this.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND);
+                    oneLine.push({
+                        name: weekNumber,
+                        desc: (theDay.getMonth() + 1) + "/" + (theDay.getDate()) + "-" + (new Date((theDay.getTime())+6*DAY2MILLISECOND).getMonth() + 1) + "/" + new Date((theDay.getTime())+6*DAY2MILLISECOND).getDate(),
+                        id: theDay.toDateString(),
+                        focus: (this.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND) <= today.getTime() && today.getTime() <= (this.range.start.getTime() + (i * 7 + j + 1) * 7 * DAY2MILLISECOND),
+                        current: theDay.getFullYear() <= this.oneDay.getFullYear()
+                    });
+                    ++weekNumber;
+                }
+                this.metric.push(oneLine);
+            }
+        }
+        this.prev = function(){
+            this.oneDay.setFullYear(this.oneDay.getFullYear()-1);
+            this.range = getYearStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年";
+        }
+        this.next = function(){
+            this.oneDay.setFullYear(this.oneDay.getFullYear()+1);
+            this.range = getYearStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年";
+        }
+        this.today = function(){
+            if (today.getFullYear() === this.oneDay.getFullYear()){
+                return;
+            }
+            this.oneDay.setFullYear(today.getFullYear());
+            this.range = getYearStartEnd(this.oneDay);
+            this.initMetric();
+            this.midLang = this.oneDay.getFullYear() + "年";
+        }
+
+        this.initMetric();
     }
     var template = "" +
     "<div class=\"row-fluid calendar\">" +
@@ -110,13 +176,13 @@ define(["framework"], function(app){
     "        </div>" +
     "        <div class=\"col-sm-7 col-xs-7 pull-right hidden-lg hidden-md close-to-right\">" +
     "            <div class=\"btn-group pull-right\">" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.prev()\">" +
     "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
     "            </button>" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.today()\">" +
     "                <span ng-bind=\"view.lang.cur\"></span>" +
     "            </button>" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.next\">" +
     "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" +
     "            </button>" +
     "            </div>" +
@@ -126,13 +192,13 @@ define(["framework"], function(app){
     "        </div>" +
     "        <div class=\"col-lg-3 col-md-3 hidden-xs hidden-sm pull-right close-to-right\">" +
     "            <div class=\"btn-group pull-right\">" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.prev()\">" +
     "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
     "            </button>" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.today()\">" +
     "                <span ng-bind=\"view.lang.cur\"></span>" +
     "            </button>" +
-    "            <button class=\"btn btn-default btn-sm\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.next()\">" +
     "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" +
     "            </button>" +
     "            </div>" +
@@ -167,9 +233,9 @@ define(["framework"], function(app){
 
     var link = function(scope,element,attris){
 
-        var today = scope.curDay ? new Date(scope.curDay) : new Date();
-        var dayView = initDayView(today);
-        var weekView = initWeekView(today);
+        var oneDay = scope.curDay ? new Date(scope.curDay) : new Date();
+        var dayView = new DayView(oneDay);
+        var weekView = new WeekView(oneDay);
 
         function updateDayLuckSituation(){
             var promise = scope.getDayLuckSituation({range:dayView.range});
