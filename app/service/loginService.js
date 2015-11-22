@@ -1,4 +1,4 @@
-define([], function(){
+define(["jquery"], function($){
     var service = function($q, camel){
         this.login = function(options){
             var defer = $q.defer();

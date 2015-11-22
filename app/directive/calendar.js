@@ -44,8 +44,7 @@ define(["framework"], function(app){
 
     function DayView(oneDay){
         var today = new Date();
-        this.oneDay = new Date(oneDay.getTime());
-        this.oneDay.setDate(1);
+        this.oneDay = new Date(oneDay.Format("yyyy-MM-01 00:00:00"));
         this.range = getMonthStartEnd(oneDay);
         this.mode = "DAY";
         this.metric = [];
@@ -61,10 +60,10 @@ define(["framework"], function(app){
                 for (var j = 0; j < 7; j++){
                     var theDay = new Date(this.range.start.getTime() + (i + j) * DAY2MILLISECOND);
                     oneWeek.push({
-                        name: theDay.getDate(),
+                        id: theDay.Format("yyyy-MM-dd"),
+                        name: theDay.Format("dd"),
                         desc: "",
                         focus: theDay.getFullYear() === today.getFullYear() && theDay.getMonth() === today.getMonth() && theDay.getDate() === today.getDate(),
-                        id: theDay.toDateString(),
                         current: theDay.getMonth() === this.oneDay.getMonth()
                     });
                 }
@@ -110,9 +109,7 @@ define(["framework"], function(app){
 
     function WeekView(oneDay){
         var today = new Date();
-        this.oneDay =  new Date(oneDay.getTime());
-        this.oneDay.setDate(1);
-        this.oneDay.setMonth(0);
+        this.oneDay =  new Date(oneDay.getFullYear() + "-01-01 00:00:00");
         this.range =  getYearStartEnd(this.oneDay);
         this.mode =  "WEEK";
         this.metric =  [];
@@ -122,19 +119,21 @@ define(["framework"], function(app){
 
         this.initMetric = function(){
             this.metric = [];
-            var weekNumber = 1;
+            var thisYearWeek = 1;
+            var nextYearWeek = 1;
             for (var i = 0; i < 8; ++i){
                 var oneLine = [];
                 for (var j = 0; j < 7; ++j){
                     var theDay = new Date(this.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND);
+                    var sunday = new Date(theDay.getTime() + 6 * 24 * 60 * 60 * 1000);
                     oneLine.push({
-                        name: weekNumber,
-                        desc: (theDay.getMonth() + 1) + "/" + (theDay.getDate()) + "-" + (new Date((theDay.getTime())+6*DAY2MILLISECOND).getMonth() + 1) + "/" + new Date((theDay.getTime())+6*DAY2MILLISECOND).getDate(),
-                        id: theDay.toDateString(),
-                        focus: (this.range.start.getTime() + (i * 7 + j) * 7 * DAY2MILLISECOND) <= today.getTime() && today.getTime() <= (this.range.start.getTime() + (i * 7 + j + 1) * 7 * DAY2MILLISECOND),
+                        id: sunday.Format('yyyy-MM-dd'),
+                        name: (theDay.getFullYear() <= this.oneDay.getFullYear()) ? thisYearWeek++ : nextYearWeek++,
+                        range: {monday: theDay.Format("yyyy-MM-dd"), sunday: sunday.Format("yyyy-MM-dd")},
+                        desc: theDay.Format("MM/dd") + "-" + sunday.Format("MM/dd"),
+                        focus: theDay.getTime() <= today.getTime() && today.getTime() < (sunday.getTime() + 24 * 60 * 60 * 1000),
                         current: theDay.getFullYear() <= this.oneDay.getFullYear()
                     });
-                    ++weekNumber;
                 }
                 this.metric.push(oneLine);
             }
@@ -267,9 +266,9 @@ define(["framework"], function(app){
         }
         scope.onCellClick = function(key){
             if (scope.mode === "DAY"){
-                scope.onDayClick({key:key, data:dayView.luckData[key]});
+                scope.onDayClick({key:key});
             }else{
-                scope.onWeekClick({key:key, data:weekView.luckData[key]});
+                scope.onWeekClick({key:key});
             }
         }
 

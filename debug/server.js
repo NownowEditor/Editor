@@ -35,8 +35,8 @@ var start = function(){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });
-            //response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"expired":7200,"token":"N-Hdy-sgA-Pc-ghMAPSomZzA5I69D09BKGtUPg1UHrHrZs60x-cLo4CUsjHKn1kRCA7Qmi6yjeZOtLve7KXUcFwqh18cWBWOXqP8lymEseitZB3lwklt4kzbOJ50wepLPIDCECcEjpUaxIVCWe17uJWD0ZkN9hDRIcDD_74SbV0%3D"}}));
-            response.write(JSON.stringify({"code":10002,"errmsg":"invalid password"}));
+            response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"expired":7200,"token":"N-Hdy-sgA-Pc-ghMAPSomZzA5I69D09BKGtUPg1UHrHrZs60x-cLo4CUsjHKn1kRCA7Qmi6yjeZOtLve7KXUcFwqh18cWBWOXqP8lymEseitZB3lwklt4kzbOJ50wepLPIDCECcEjpUaxIVCWe17uJWD0ZkN9hDRIcDD_74SbV0%3D"}}));
+            //response.write(JSON.stringify({"code":10002,"errmsg":"invalid password"}));
             response.end();
             return;
         }else if (pathname === "/cgi-bin/verify"){
