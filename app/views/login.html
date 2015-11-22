@@ -1,32 +1,20 @@
-<link rel="stylesheet" type="text/css" href="/style/login.css">
+<link rel="stylesheet" href="/style/login.css">
+<div class="container-fluid">
+    <div class="row">
+        <div class="loginpanel">
+            <i id="loading" ng-class="{'hidden':!logining}" class="fa fa-spinner fa-spin bigicon"></i>
+            <h2>
+                <span class="fa fa-quote-left "></span> 登录 <span class="fa fa-quote-right "></span>
+            </h2>
+            <div>
+                <input id="username" ng-model="account.username" type="text" placeholder="登录账号" ng-change="valueChange($event)">
+                <input id="password" ng-model="account.password" type="password" placeholder="输入密码" ng-change="valueChange($event)">
 
-<div class="box">
-        <div class="login-box">
-            <div class="login-title text-center">
-                <h1><small>登录</small></h1>
-            </div>
-            <div class="login-content ">
-            <div class="form">
-                <div class="form-group">
-                    <div class="col-xs-12  ">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="text" id="username" ng-model="account.username" class="form-control" placeholder="用户名">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12  ">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="text" id="password" ng-model="account.password" class="form-control" placeholder="密码">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-4 col-xs-offset-4 " ng-click="login()">
-                        <button type="submit" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-off"></span> 登录</button>
-                    </div>
+                <div class="buttonwrapper">
+                    <button id="loginbtn" class="btn btn-warning loginbutton" ng-click="login()">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <span id="lockbtn" class="glyphicon glyphicon-lock lockbutton redborder"></span>
                 </div>
             </div>
         </div>

@@ -42,8 +42,8 @@ var start = function(){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });
-            //response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"uid":16}}));
-            response.write(JSON.stringify({"code":20001,"errmsg":"wrong token's client ip"}));
+            response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"uid":16}}));
+            //response.write(JSON.stringify({"code":20001,"errmsg":"wrong token's client ip"}));
             response.end();
             return;
         }
