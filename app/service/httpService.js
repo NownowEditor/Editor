@@ -6,7 +6,7 @@ define(['jquery'], function($){
                 "method":"GET",
                 "beforeSend": function(request){
                 },
-                "data": options.params || {},
+                "data": JSON.stringify(options.params || {}),
                 "dataType":"JSON"
             });
             return deferred;
@@ -18,7 +18,7 @@ define(['jquery'], function($){
                 "method":"POST",
                 "beforeSend": function(request){
                 },
-                "data": options.params || {},
+                "data": JSON.stringify(options.params || {}),
                 "dataType":"JSON"
             });
             return deferred;
