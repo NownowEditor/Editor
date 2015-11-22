@@ -12,6 +12,9 @@ define([], function(){
             loginReq.success(function(data){
                 defer.resolve(data);
             });
+            loginReq.fail(function(){
+                defer.resolve();
+            });
             return defer.promise;
         };
         this.verify = function(options){
@@ -25,9 +28,9 @@ define([], function(){
             verifyReq.success(function(data){
                 deferred.resolve(data);
             });
-            // verifyReq.failed(function(){
-            //     deferred.resolve();
-            // });
+            verifyReq.fail(function(){
+                deferred.resolve();
+            });
             return deferred.promise;
         }
     }

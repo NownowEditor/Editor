@@ -6,6 +6,8 @@ define(['app/service/loginService'],function(LoginService){
             "username": "",
             "password": ""
         };
+        $scope.loginError = false;
+        $scope.loginErrorTip = "";
         $scope.logining = false;
         $scope.login = function(){
             $scope.logining = true;
@@ -16,9 +18,11 @@ define(['app/service/loginService'],function(LoginService){
             promise.then(function(data){
                 if (data && data.base && data.base.code === 0){
                     $cookies.putObject("user", data.result);
+                    $scope.loginError = false;
                     $state.go('home.cEnergy');
-                }else if (data && data.code){
-                    alert("用户名或者密码错误");
+                }else{
+                    $scope.loginError = true;
+                    $scope.loginErrorTip = "用户名或密码错误！";
                 }
             });
         }

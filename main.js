@@ -6,7 +6,8 @@ require.config({
         'angular-route': 'third_party/uirouter/angular-ui-router.min',
         'controller': 'app/controller',
         'calendar': 'third_party/responsiveCalendar/js/calendar-tpls',
-        'angular-cookies': 'third_party/angular/angular-cookies'
+        'angular-cookies': 'third_party/angular/angular-cookies',
+        'angular-animate': 'third_party/angular/angular-animate'
     },
     shim:{
         'angular':{
@@ -17,6 +18,9 @@ require.config({
             exports: 'angular-route'
         },
         'angular-cookies':{
+            deps:['angular']
+        },
+        'angular-animate':{
             deps:['angular']
         }
     }

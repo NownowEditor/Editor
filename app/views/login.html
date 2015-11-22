@@ -2,10 +2,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="loginpanel">
-            <i id="loading" ng-class="{'hidden':!logining}" class="fa fa-spinner fa-spin bigicon"></i>
             <h2>
                 <span class="fa fa-quote-left "></span> 登录 <span class="fa fa-quote-right "></span>
             </h2>
+            <div class="alert alert-danger" ng-show="loginError" role="alert" ng-bind="loginErrorTip"></div>
             <div>
                 <input id="username" ng-model="account.username" type="text" placeholder="登录账号" ng-change="valueChange($event)">
                 <input id="password" ng-model="account.password" type="password" placeholder="输入密码" ng-change="valueChange($event)">
