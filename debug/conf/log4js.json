@@ -1,10 +1,12 @@
 {
     "appenders": [
         {"type": "file", "filename": "logs/server.log", "category": "server", "maxLogSize": 10485760, "backups":10},
-        {"type": "file", "filename": "logs/business.log", "category": "business", "maxLogSize": 10485760, "backups":10}
+        {"type": "file", "filename": "logs/business.log", "category": "business", "maxLogSize": 10485760, "backups":10},
+        {"type": "file", "filename": "logs/fixture.log", "category": "fixture", "maxLogSize": 10485760, "backups":10}
     ],
     "levels":{
         "server": "ERROR",
-        "business": "INFO"
+        "business": "INFO",
+        "fixture": "ERROR"
     }
 }

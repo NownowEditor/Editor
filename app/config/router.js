@@ -1,4 +1,4 @@
-define(['angular-route'],function(){
+define(['app/service/loginService','angular-route'],function(LoginService){
     var router =['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$uiViewScrollProvider',  function($stateProvider, $urlRouterProvider, $controllerProvider, $uiViewScrollProvider){
         //用于改变state时跳至顶部
         $uiViewScrollProvider.useAnchorScroll();
@@ -29,14 +29,34 @@ define(['angular-route'],function(){
                 templateUrl: '/app/views/home.html',
                 controller:'home',
                 resolve:{
-                    deps: function($q, $rootScope){
+                    deps: function($q){
                         var deferred = $q.defer();
                         require(['controller/homeCtrl'],function(homeCtrl){
-                            $rootScope.$evalAsync(function(){
-                                $controllerProvider.register('home', homeCtrl);
-                            });
-                            deferred.resolve();
+                            $controllerProvider.register('home', homeCtrl);
+                            deferred.resolve('deps resolved');
                         });
+                        return deferred.promise;
+                    },
+                    user: function($q, $cookies, camel){
+                        var loginService = new LoginService($q, camel);
+                        var deferred = $q.defer();
+                        var userInCookie = $cookies.getObject("user");
+                        if (userInCookie && userInCookie.token){
+                            var verify = loginService.verify({
+                                token: userInCookie.token
+                            });
+                            verify.then(function(data){
+                                if (data && data.base && data.base.code === 0){
+                                    deferred.resolve(data.result);
+                                }else{
+                                    deferred.resolve();
+                                }
+                            });
+                        }else{
+                            setTimeout(function(){
+                                deferred.resolve()
+                            }, 0);
+                        }
                         return deferred.promise;
                     }
                 }

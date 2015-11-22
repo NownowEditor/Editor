@@ -182,7 +182,7 @@ define(["framework"], function(app){
     "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.today()\">" +
     "                <span ng-bind=\"view.lang.cur\"></span>" +
     "            </button>" +
-    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.next\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.next()\">" +
     "                <span ng-bind=\"view.lang.next\"></span><li class=\"glyphicon glyphicon-menu-right\"></li>" +
     "            </button>" +
     "            </div>" +

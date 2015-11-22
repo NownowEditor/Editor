@@ -1,5 +1,11 @@
 define(["bootstrap"],function(){
-    var homeCtrl = function($scope, $q, camel, $state){
+    var homeCtrl = function($rootScope, $scope, $cookies, $state, user){
+        if (!user || !user.uid){
+            $state.go("login");
+            return;
+        }
+        $rootScope.user = $cookies.getObject("user");
+        $rootScope.user.uid = user.uid;
         $scope.brand = "女巫店编辑后台";
         $scope.modules = [{
             name:'cEnergy',
@@ -18,7 +24,6 @@ define(["bootstrap"],function(){
             desc:'公用工具',
             state:'home.pTools'
         }];
-
         $scope.go = function(state){
             $state.go(state);
         }

@@ -3,10 +3,10 @@ define([], function(){
         this.login = function(options){
             var defer = $q.defer();
             var loginReq = camel.post({
-                "url":"/login",
-                "user": options.uname,
-                "pwd":options.upwd,
+                "url":"/cgi-bin/token",
                 "params":{
+                    "username": options.username,
+                    "password": options.password
                 }
             });
             loginReq.success(function(data){
@@ -14,6 +14,22 @@ define([], function(){
             });
             return defer.promise;
         };
+        this.verify = function(options){
+            var deferred = $q.defer();
+            var verifyReq = camel.post({
+                "url":"/cgi-bin/verify",
+                "params":{
+                    "token": options.token || ""
+                }
+            });
+            verifyReq.success(function(data){
+                deferred.resolve(data);
+            });
+            // verifyReq.failed(function(){
+            //     deferred.resolve();
+            // });
+            return deferred.promise;
+        }
     }
     return service;
 });
