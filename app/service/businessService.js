@@ -21,7 +21,7 @@ define(['jquery'], function($){
         this.getContent = function(options){
             var deferred = $q.defer();
             var getcontent = camel.post({
-                "url":"/cgi-bin/edit/get?token=" + (options.token || ""),
+                "url":"/cgi-bin/hes/get_fortune?token=" + (options.token || ""),
                 "params":options.params || {}
             });
             getcontent.success(function(data){
@@ -36,7 +36,7 @@ define(['jquery'], function($){
         this.setContent = function(options){
             var deferred = $q.defer();
             var setContent = camel.post({
-                "url":"/cgi-bin/edit/get?token=" + (options.token || ""),
+                "url":"/cgi-bin/hes/set_fortune?token=" + (options.token || ""),
                 "params":options.params || {}
             });
             setContent.success(function(data){

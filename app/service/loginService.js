@@ -3,7 +3,7 @@ define(["jquery"], function($){
         this.login = function(options){
             var defer = $q.defer();
             var loginReq = camel.post({
-                "url":"/cgi-bin/token",
+                "url":"/cgi-bin/hes/token",
                 "params":{
                     "username": options.username,
                     "password": options.password
@@ -20,7 +20,7 @@ define(["jquery"], function($){
         this.verify = function(options){
             var deferred = $q.defer();
             var verifyReq = camel.post({
-                "url":"/cgi-bin/verify",
+                "url":"/cgi-bin/hes/verify",
                 "params":{
                     "token": options.token || ""
                 }
