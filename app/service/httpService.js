@@ -6,7 +6,7 @@ define(['jquery'], function($){
                 "method":"GET",
                 "beforeSend": function(request){
                 },
-                "data": JSON.stringify(options.params || {}),
+                //"data": JSON.stringify(options.params || {}),
                 "dataType":"JSON"
             });
             return deferred;

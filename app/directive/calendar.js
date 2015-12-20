@@ -178,7 +178,7 @@ define(["framework"], function(app){
             var years = [];
             for (var i = -3; i <= 3; ++i){
                 years.push({
-                    id: oneDay.getFullYear() + i,
+                    id: (oneDay.getFullYear() + i) + "-01-01",
                     name: oneDay.getFullYear() + i,
                     desc: "",
                     focus: i === 0,

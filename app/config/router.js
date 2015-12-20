@@ -46,8 +46,8 @@ define(['app/service/loginService','angular-route'],function(LoginService){
                                 token: userInCookie.token
                             });
                             verify.then(function(data){
-                                if (data && data.base && data.base.code === 0){
-                                    deferred.resolve(data.result);
+                                if (data && data.code === 0){
+                                    deferred.resolve(data);
                                 }else{
                                     deferred.resolve();
                                 }

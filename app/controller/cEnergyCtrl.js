@@ -37,14 +37,14 @@ define(["app/service/businessService", "bootstrap"],function(BusinessService){
                     params: {
                         type: astro.type,
                         astro: index,
-                        day: astro.key
+                        date: astro.key
                     }
                 });
                 query.then(function(data){
                     successNumber++;
                     mask.updateprogress(parseInt(100 * successNumber / $scope.luckData.length));
                     if (data && data.base && data.base.code === 0){
-                        $scope.luckData[index].content = data.result.content;
+                        $scope.luckData[index].content = data.result && data.result.content || "";
                     }
                     if (successNumber === $scope.luckData.length){
                         mask.hide();
@@ -77,7 +77,7 @@ define(["app/service/businessService", "bootstrap"],function(BusinessService){
             $scope.editing = true;
             $scope.title = "今年运势";
             angular.forEach($scope.luckData, function(astro, index){
-                astro.type = 1;
+                astro.type = 9;
                 astro.key = key;
                 astro.placeholder = astro.name + key.key + "年运势";
             });
@@ -91,12 +91,12 @@ define(["app/service/businessService", "bootstrap"],function(BusinessService){
             mask.show(true);
             var successNumber = 0;
             angular.forEach($scope.luckData, function(astro, index){
-                var set = businessService.getContent({
+                var set = businessService.setContent({
                     token: $scope.user.token,
                     params: {
                         type: astro.type,
                         astro: index,
-                        day: astro.key,
+                        date: astro.key,
                         content: astro.content
                     }
                 });

@@ -1,11 +1,10 @@
 define(["bootstrap"],function(){
     var homeCtrl = function($rootScope, $scope, $cookies, $state, user){
-        if (!user || !user.uid){
+        if (!user){
             $state.go("login");
             return;
         }
         $rootScope.user = $cookies.getObject("user");
-        $rootScope.user.uid = user.uid;
         $scope.brand = "女巫店编辑后台";
         $scope.modules = [{
             name:'cEnergy',

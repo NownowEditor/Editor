@@ -19,11 +19,8 @@ define(["jquery"], function($){
         };
         this.verify = function(options){
             var deferred = $q.defer();
-            var verifyReq = camel.post({
-                "url":"/cgi-bin/hes/verify",
-                "params":{
-                    "token": options.token || ""
-                }
+            var verifyReq = camel.get({
+                "url":"/cgi-bin/hes/verify?token=" + options.token || ""
             });
             verifyReq.success(function(data){
                 deferred.resolve(data);
