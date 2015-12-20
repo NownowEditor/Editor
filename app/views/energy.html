@@ -1,6 +1,10 @@
 <calendar cur-day="curDay" mode="mode" ng-show="!editing"
-              on-day-click="onDayClick(key,data)" on-week-click="onWeekClick(key,data)"
-              get-day-luck-situation="getDayLuckSituation(range)">
+              on-day-click="onDayClick(key,data)"
+              on-week-click="onWeekClick(key,data)"
+              on-year-click="onYearClick(key,data)"
+              get-day-luck-situation="getDayLuckSituation(range)"
+              get-week-luck-situation="getWeekLuckSituation(range)"
+              get-year-luck-situation="getYearLuckSituation(range)">
 </calendar>
 <div class="row-fluid clearfix" ng-show="editing">
     <button class="btn btn-default btn-sm col-lg-1 col-md-1 col-sm-2 col-xs-3 close-to-left" ng-click="backToCalendar()">

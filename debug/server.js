@@ -28,7 +28,6 @@ var start = function(){
             }
         });
     }
-
     var onRequest = function(request, response){
         var pathname = url.parse(request.url).pathname;
         if (pathname === "/cgi-bin/token"){
@@ -45,6 +44,22 @@ var start = function(){
             });
             response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"uid":16}}));
             //response.write(JSON.stringify({"code":20001,"errmsg":"wrong token's client ip"}));
+            response.end();
+            return;
+        }else if (pathname === "/cgi-bin/edit/get"){
+            response.writeHead(200, {
+                'Content-Type':'application/json'
+            });
+            response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"content":"content"}}));
+            for(var start = new Date().getTime() + 1000; new Date().getTime() < start; ){}
+            response.end();
+            return;
+        }else if (pathname === "/cgi-bin/edit/set"){
+            response.writeHead(200, {
+                'Content-Type':'application/json'
+            });
+            response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"}}));
+            for(var start = new Date().getTime() + 1000; new Date().getTime() < start; ){}
             response.end();
             return;
         }

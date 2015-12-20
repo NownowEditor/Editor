@@ -1,33 +1,33 @@
 require.config({
     paths: {
-        'jquery': 'third_party/jquery/jquery-2.1.4.min',
-        'angular': 'third_party/angular/angular.min',
-        'bootstrap': 'third_party/bootstrap/js/bootstrap.min',
-        'angular-route': 'third_party/uirouter/angular-ui-router.min',
-        'controller': 'app/controller',
-        'calendar': 'third_party/responsiveCalendar/js/calendar-tpls',
-        'angular-cookies': 'third_party/angular/angular-cookies',
-        'angular-animate': 'third_party/angular/angular-animate'
+        "jquery": "third_party/jquery/jquery-2.1.4.min",
+        "angular": "third_party/angular/angular.min",
+        "bootstrap": "third_party/bootstrap/js/bootstrap.min",
+        "angular-route": "third_party/uirouter/angular-ui-router.min",
+        "controller": "app/controller",
+        "calendar": "third_party/responsiveCalendar/js/calendar-tpls",
+        "angular-cookies": "third_party/angular/angular-cookies",
+        "angular-animate": "third_party/angular/angular-animate"
     },
     shim:{
-        'angular':{
-            exports:'angular'
+        "angular":{
+            exports:"angular"
         },
-        'angular-route':{
-            deps:['angular'],
-            exports: 'angular-route'
+        "angular-route":{
+            deps:["angular"],
+            exports: "angular-route"
         },
-        'angular-cookies':{
-            deps:['angular']
+        "angular-cookies":{
+            deps:["angular"]
         },
-        'angular-animate':{
-            deps:['angular']
+        "angular-animate":{
+            deps:["angular"]
         }
     }
 });
 
-require(['jquery','angular','framework'],function($, angular, app){
-    'use strict';
+require(["jquery","angular","framework"],function($, angular, app){
+    "use strict";
     Date.prototype.Format = function(fmt) //扩展的Date简易format方法
     { //author: meizz
       var o = {
@@ -46,5 +46,5 @@ require(['jquery','angular','framework'],function($, angular, app){
       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
       return fmt;
     }
-    angular.bootstrap($('html'), [app.name]);
+    angular.bootstrap($("html"), [app.name]);
 });

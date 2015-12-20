@@ -53,7 +53,7 @@ define(["app/service/businessService", "bootstrap"],function(BusinessService){
             });
         }
 
-        $scope.onDayClick = function(key, data){
+        $scope.onDayClick = function(key){
             $scope.editing = true;
             $scope.title = key + "日运势";
             angular.forEach($scope.luckData, function(astro, index){
@@ -63,13 +63,23 @@ define(["app/service/businessService", "bootstrap"],function(BusinessService){
             });
             queryAstroContent();
         }
-        $scope.onWeekClick = function(key, data){
+        $scope.onWeekClick = function(key){
             $scope.editing = true;
             $scope.title = "本周运势";
             angular.forEach($scope.luckData, function(astro, index){
                 astro.type = 1;
                 astro.key = key;
                 astro.placeholder = astro.name + "周运势";
+            });
+            queryAstroContent();
+        }
+        $scope.onYearClick = function(key){
+            $scope.editing = true;
+            $scope.title = "今年运势";
+            angular.forEach($scope.luckData, function(astro, index){
+                astro.type = 1;
+                astro.key = key;
+                astro.placeholder = astro.name + key.key + "年运势";
             });
             queryAstroContent();
         }

@@ -162,18 +162,48 @@ define(["framework"], function(app){
 
         this.initMetric();
     }
+
+    function YearView(oneDay){
+        var today = new Date();
+        this.oneDay =  new Date(oneDay.getFullYear() + "-01-01 00:00:00");
+        this.range = {start: (oneDay.getFullYear() - 3) + "-01-01 00:00:00",
+                      end: (oneDay.getFullYear() + 3) + "-01-01 00:00:00"};
+        this.mode =  "YEAR";
+        this.metric =  [];
+        this.luckData =  {};
+        this.midLang =  "年度运势";
+
+        this.initMetric = function(){
+            this.metric = [];
+            var years = [];
+            for (var i = -3; i <= 3; ++i){
+                years.push({
+                    id: oneDay.getFullYear() + i,
+                    name: oneDay.getFullYear() + i,
+                    desc: "",
+                    focus: i === 0,
+                    current: true
+                });
+            }
+            this.metric.push(years);
+        }
+
+        this.initMetric();
+    }
     var template = "" +
     "<div class=\"row-fluid calendar\">" +
     "    <div class=\"row-fluid\">" +
-    "        <div class=\"col-lg-3 col-md-3 col-sm-5 col-xs-5 close-to-left\">" +
+    "        <div class=\"col-lg-3 col-md-3 col-sm-5 col-xs-6 close-to-left close-to-right\">" +
     "            <div class=\"btn-group\">" +
+    "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='YEAR'}\" " +
+    "                    ng-click=\"changeMode('YEAR')\"><span class=\"hidden-lg hidden-md hidden-sm\">年运</span><span class=\"hidden-xs\">年运势</span></button>" +
     "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='WEEK'}\" " +
-    "                    ng-click=\"changeMode('WEEK')\"><span>周运势</span></button>" +
+    "                    ng-click=\"changeMode('WEEK')\"><span class=\"hidden-lg hidden-md hidden-sm\">周运</span><span class=\"hidden-xs\">周运势</span></button>" +
     "            <button class=\"btn btn-default btn-sm\" ng-class=\"{'active':mode==='DAY'}\"" +
-    "                    ng-click=\"changeMode('DAY')\"><span>日运势</span></button> " +
+    "                    ng-click=\"changeMode('DAY')\"><span class=\"hidden-lg hidden-md hidden-sm\">日运</span><span class=\"hidden-xs\">日运势</span></button> " +
     "            </div>" +
     "        </div>" +
-    "        <div class=\"col-sm-7 col-xs-7 pull-right hidden-lg hidden-md close-to-right\">" +
+    "        <div ng-if=\"view.prev || view.today || view.next\" class=\"col-sm-7 col-xs-6 pull-right hidden-lg hidden-md close-to-left close-to-right\">" +
     "            <div class=\"btn-group pull-right\">" +
     "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.prev()\">" +
     "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
@@ -189,7 +219,7 @@ define(["framework"], function(app){
     "        <div class=\"col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center h4\">" +
     "            <span ng-bind=\"view.midLang\"></span>" +
     "        </div>" +
-    "        <div class=\"col-lg-3 col-md-3 hidden-xs hidden-sm pull-right close-to-right\">" +
+    "        <div ng-if=\"view.prev || view.today || view.next\" class=\"col-lg-3 col-md-3 hidden-xs hidden-sm pull-right close-to-right\">" +
     "            <div class=\"btn-group pull-right\">" +
     "            <button class=\"btn btn-default btn-sm\" ng-click=\"view.prev()\">" +
     "                <li class=\"glyphicon glyphicon-menu-left\"></li><span ng-bind=\"view.lang.prev\"></span>" +
@@ -233,46 +263,65 @@ define(["framework"], function(app){
     var link = function(scope,element,attris){
 
         var oneDay = scope.curDay ? new Date(scope.curDay) : new Date();
-        var dayView = new DayView(oneDay);
-        var weekView = new WeekView(oneDay);
+        var views = {
+            "YEAR": new YearView(oneDay),
+            "WEEK": new WeekView(oneDay),
+            "DAY": new DayView(oneDay)
+        };
 
         function updateDayLuckSituation(){
-            var promise = scope.getDayLuckSituation({range:dayView.range});
+            var promise = scope.getDayLuckSituation(views.DAY.range);
             promise.then(function(){
             });
         }
 
         function updateWeekLuckSituation(){
-            var promise = scope.getWeekLuckSituation(weekView.range);
+            var promise = scope.getWeekLuckSituation(views.WEEK.range);
             promise.then(function(){
 
             });
         }
 
+        function updateYearLuckSituation(){
+            var promise = scope.getYearLuckSituation(views.YEAR.range);
+            promise.then(function(){
 
-        scope.mode = scope.mode === "WEEK" ? scope.mode : "DAY";
-        scope.view = scope.mode === "DAY" ? dayView : weekView;
+            });
+        }
+
+        scope.mode = ["YEAR","WEEK","DAY"].indexOf(scope.mode) >= 0 ? scope.mode : "DAY";
+        scope.view = views[scope.mode];
 
         scope.changeMode = function(mode){
             if (mode === scope.mode){
                 return;
             }
             scope.mode = mode;
-            if(mode === "DAY"){
-                scope.view = dayView;
-            }else{
-                scope.view = weekView;
-            }
+            scope.view = views[mode];
         }
+
         scope.onCellClick = function(key){
             if (scope.mode === "DAY"){
                 scope.onDayClick({key:key});
-            }else{
+            }else if(scope.mode === "WEEK"){
                 scope.onWeekClick({key:key});
+            }else if(scope.mode === "YEAR"){
+                scope.onYearClick({key:key});
             }
         }
 
-        updateDayLuckSituation();
+        switch(scope.mode)
+        {
+            case "YEAR":
+                updateYearLuckSituation();
+                break;
+            case "WEEK":
+                updateWeekLuckSituation();
+                break;
+            case "DAY":
+                updateDayLuckSituation();
+                break;
+        };
     }
     return function(){
         return {
@@ -288,9 +337,11 @@ define(["framework"], function(app){
                 //function
                 getDayLuckSituation: "&getDayLuckSituation",
                 getWeekLuckSituation: "&getWeekLuckSituation",
+                getYearLuckSituation: "&getYearLuckSituation",
                 //event
                 onDayClick: "&onDayClick",
-                onWeekClick: "&onWeekClick"
+                onWeekClick: "&onWeekClick",
+                onYearClick: "&onYearClick"
             },
             controller: controller,
             link: link
