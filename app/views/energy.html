@@ -14,8 +14,27 @@
     <button class="btn btn-primary btn-sm col-lg-1 col-md-1 col-sm-2 col-xs-3 close-to-right pull-right" ng-click="save()">保存</button>
 </div>
 <div id="editArea" class="row-fluid clearfix" ng-show="editing">
-    <div ng-repeat="astro in luckData" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 sub-edit-area close-to-left close-to-right">
-        <span class="h4 center-block text-center" ng-bind="astro.name"></span>
-        <textarea style="width:99%" ng-model="astro.content" placeholder="{{astro.placeholder}}"></textarea>
+    <div ng-repeat="astro in luckData" ng-if="astro.type === 0 || astro.type === 1" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 sub-edit-area close-to-left close-to-right">
+      <div class="h4 center-block text-center"><input type="checkbox" ng-checked="astro.checked" ng-model="astro.checked"></input><span ng-bind="astro.name"></span></div>
+      <textarea style="width:99%" ng-disabled="!astro.checked" ng-model="astro.content" placeholder="{{astro.placeholder}}"></textarea>
+    </div>
+    <div ng-repeat="astro in luckData" ng-if="astro.type === 9" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 sub-edit-area close-to-left close-to-right">
+      <div class="h4 center-block text-center"><input type="checkbox" ng-checked="astro.checked" ng-model="astro.checked"></input><span ng-bind="astro.name"></span></div>
+      <div class="input-group">
+        <span class="input-group-addon" ng-bind="'标题'"></span>
+        <input type="text" class="form-control" ng-disabled="!astro.checked" placeholder="{{astro.title.placeholder}}" ng-bind="astro.title.value">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" ng-bind="'摘要'"></span>
+        <input type="text" class="form-control" ng-disabled="!astro.checked" placeholder="{{astro.description.placeholder}}" ng-bind="astro.description.value">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" ng-bind="'链接'"></span>
+        <input type="text" class="form-control" ng-disabled="!astro.checked" placeholder="{{astro.url.placeholder}}" ng-bind="astro.url.value">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" ng-bind="'图片'"></span>
+        <input type="text" class="form-control" ng-disabled="!astro.checked" placeholder="{{astro.picurl.placeholder}}" ng-bind="astro.picurl.value">
+      </div>
     </div>
 </div>

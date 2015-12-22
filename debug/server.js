@@ -30,7 +30,7 @@ var start = function(){
     }
     var onRequest = function(request, response){
         var pathname = url.parse(request.url).pathname;
-        if (pathname === "/cgi-bin/token"){
+        if (pathname === "/cgi-bin/hes/token"){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });
@@ -38,15 +38,15 @@ var start = function(){
             //response.write(JSON.stringify({"code":10002,"errmsg":"invalid password"}));
             response.end();
             return;
-        }else if (pathname === "/cgi-bin/verify"){
+        }else if (pathname === "/cgi-bin/hes/verify"){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });
-            response.write(JSON.stringify({"base":{"code":0,"errmsg":"ok"},"result":{"uid":16}}));
+            response.write(JSON.stringify({"code":0,"errmsg":"ok"}));
             //response.write(JSON.stringify({"code":20001,"errmsg":"wrong token's client ip"}));
             response.end();
             return;
-        }else if (pathname === "/cgi-bin/edit/get"){
+        }else if (pathname === "/cgi-bin/hes/get_fortune"){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });
@@ -54,7 +54,7 @@ var start = function(){
             for(var start = new Date().getTime() + 1000; new Date().getTime() < start; ){}
             response.end();
             return;
-        }else if (pathname === "/cgi-bin/edit/set"){
+        }else if (pathname === "/cgi-bin/hes/set_fortune"){
             response.writeHead(200, {
                 'Content-Type':'application/json'
             });

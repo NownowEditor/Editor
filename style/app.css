@@ -46,8 +46,10 @@
 }
 
 .sub-edit-area{
-
+    padding-left: 10px;
+    padding-right: 10px;
 }
+
 .sub-edit-area textarea{
     width:100%;
     min-height:200px;

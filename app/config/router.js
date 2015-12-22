@@ -1,20 +1,20 @@
-define(['app/service/loginService','angular-route'],function(LoginService){
-    var router =['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$uiViewScrollProvider',  function($stateProvider, $urlRouterProvider, $controllerProvider, $uiViewScrollProvider){
+define(["app/service/loginService","angular-route"],function(LoginService){
+    var router =["$stateProvider", "$urlRouterProvider", "$controllerProvider", "$uiViewScrollProvider",  function($stateProvider, $urlRouterProvider, $controllerProvider, $uiViewScrollProvider){
         //用于改变state时跳至顶部
         $uiViewScrollProvider.useAnchorScroll();
         // 默认进入先重定向
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise("/login");
 
-        $stateProvider.state('login',{
-                url:'/login',
-                templateUrl: '/app/views/login.html',
-                controller:'login',
+        $stateProvider.state("login",{
+                url:"/login",
+                templateUrl: "/app/views/login.html",
+                controller:"login",
                 resolve:{
                     deps:function($q, $rootScope){
                         var deferred = $q.defer();
-                        require(['controller/loginCtrl'],function(loginCtrl){
+                        require(["controller/loginCtrl"],function(loginCtrl){
                             $rootScope.$evalAsync(function(){
-                                $controllerProvider.register('login', loginCtrl);
+                                $controllerProvider.register("login", loginCtrl);
                             });
                             deferred.resolve();
                         });
@@ -24,16 +24,16 @@ define(['app/service/loginService','angular-route'],function(LoginService){
 
             }
         );
-        $stateProvider.state('home',{
-                url:'/home',
-                templateUrl: '/app/views/home.html',
-                controller:'home',
+        $stateProvider.state("home",{
+                url:"/home",
+                templateUrl: "/app/views/home.html",
+                controller:"home",
                 resolve:{
                     deps: function($q){
                         var deferred = $q.defer();
-                        require(['controller/homeCtrl'],function(homeCtrl){
-                            $controllerProvider.register('home', homeCtrl);
-                            deferred.resolve('deps resolved');
+                        require(["controller/homeCtrl"],function(homeCtrl){
+                            $controllerProvider.register("home", homeCtrl);
+                            deferred.resolve("deps resolved");
                         });
                         return deferred.promise;
                     },
@@ -58,20 +58,27 @@ define(['app/service/loginService','angular-route'],function(LoginService){
                             }, 0);
                         }
                         return deferred.promise;
+                    },
+                    businessService: function($q){
+                        var deferred = $q.defer();
+                        require(["app/service/httpService","app/service/businessService"], function(camel, bs){
+                            deferred.resolve(new bs($q, new camel()));
+                        });
+                        return deferred.promise;
                     }
                 }
             }
         );
-        $stateProvider.state('home.cEnergy',{
-                url:'/cEnergy',
-                templateUrl: '/app/views/energy.html',
-                controller:'home.cEnergy',
+        $stateProvider.state("home.cEnergy",{
+                url:"/cEnergy",
+                templateUrl: "/app/views/energy.html",
+                controller:"home.cEnergy",
                 resolve: {
                     deps: function($q, $rootScope){
                         var deferred = $q.defer();
-                        require(['controller/cEnergyCtrl'],function(ctrl){
+                        require(["controller/cEnergyCtrl"],function(ctrl){
                             $rootScope.$evalAsync(function(){
-                                $controllerProvider.register('home.cEnergy', ctrl);
+                                $controllerProvider.register("home.cEnergy", ctrl);
                             });
                             deferred.resolve();
                         });
@@ -80,27 +87,27 @@ define(['app/service/loginService','angular-route'],function(LoginService){
                 }
             }
         );
-        $stateProvider.state('home.cSearch',{
-                url:'/cSearch',
-                template: '功能开发中...',
-                controller:'developing'
+        $stateProvider.state("home.cSearch",{
+                url:"/cSearch",
+                template: "功能开发中...",
+                controller:"developing"
             }
         );
-        $stateProvider.state('home.cTabloid',{
-                url:'/cTabloid',
-                template: '功能开发中...',
-                controller:'developing'
+        $stateProvider.state("home.cTabloid",{
+                url:"/cTabloid",
+                template: "功能开发中...",
+                controller:"developing"
             }
         );
-        $stateProvider.state('home.pTools',{
-                url:'/pTools',
-                template: '功能开发中...',
-                controller:'developing'
+        $stateProvider.state("home.pTools",{
+                url:"/pTools",
+                template: "功能开发中...",
+                controller:"developing"
             }
         );
     }];
-    var configModule = angular.module('configModule',['ui.router']);
-    configModule.controller('developing', ['$scope', function($scope){
+    var configModule = angular.module("configModule",["ui.router"]);
+    configModule.controller("developing", ["$scope", function($scope){
         
     }]);
     configModule.config(router);
